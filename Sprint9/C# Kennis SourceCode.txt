@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,7 +27,7 @@ namespace Csharp_kennis
             Console.WriteLine("Welkom bij Soundsharp " + UserName);
 
             //voeg mp3 spelers toe
-            List<Product> Mp3Spelers = new List<Product>();
+            ArrayList Mp3Spelers = new ArrayList();
             Mp3Spelers.Add(new Product { ID = 1, Make = "GET technologies .inc", Model = "HF 410", MBSize = 4096, Price = 129.95, Stock = 500 });
             Mp3Spelers.Add(new Product { ID = 2, Make = "Far & loud", Model = "XM 600", MBSize = 8192, Price = 224.95, Stock = 500 });
             Mp3Spelers.Add(new Product { ID = 3, Make = "Innovative", Model = "z3", MBSize = 512, Price = 79.95, Stock = 500 });
@@ -106,7 +107,7 @@ namespace Csharp_kennis
                 catch { }
         }
 
-        public static List<Product> MutateStock(List<Product> Mp3Spelers)
+        public static ArrayList MutateStock(ArrayList Mp3Spelers)
         {
             Console.WriteLine("Wat is het ID van de mp3 speler?");
             int CurrentID;
@@ -138,14 +139,21 @@ namespace Csharp_kennis
                 goto RetryInputStock;
             }
             var Mp3SpelersArray = Mp3Spelers.ToArray();
+            Product CurrentProduct;
             for (int index = 0; index < Mp3SpelersArray.Length; index += 1)
-                if (Mp3SpelersArray[index].ID == CurrentID)
-                    Mp3SpelersArray[index].Stock = CurrentStock;
+            {
+                CurrentProduct = (Product)Mp3SpelersArray[index];
+                if (CurrentProduct.ID == CurrentID)
+                    CurrentProduct.Stock = CurrentStock;
+                Mp3SpelersArray[index] = CurrentProduct;
+            }
             ShowMenu();
-            return Mp3SpelersArray.ToList();
+            ArrayList UpdatedMp3Speler = new ArrayList();
+            UpdatedMp3Speler.AddRange(Mp3SpelersArray);
+            return UpdatedMp3Speler;
         }
 
-        public static void GetStatistics(List<Product> Mp3Spelers, out string Statistics)
+        public static void GetStatistics(ArrayList Mp3Spelers, out string Statistics)
         {
             int TotaleVoorraad = 0;
             double TotaleVoorraadWaarde = 0;
@@ -168,11 +176,9 @@ namespace Csharp_kennis
             Statistics += "Mp3 speler met de beste prijs per mB: " + PrijsPerMbNaam;
         }
 
-        public static Product AddNewMp3Speler(List<Product> Mp3Spelers)
+        public static Product AddNewMp3Speler(ArrayList Mp3Spelers)
         {
-            int ID = 1;
-            while (Mp3Spelers.Where(x => x.ID == ID).Count() != 0)
-                ID += 1;
+            int ID = Mp3Spelers.ToArray().Length + 1;
             Product ReturnProduct = new Product { ID = ID };
             Console.WriteLine("Merk: ");
             ReturnProduct.Make = Console.ReadLine();
