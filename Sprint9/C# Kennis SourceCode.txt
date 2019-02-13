@@ -42,7 +42,7 @@ namespace Csharp_kennis
             while (1 == 1)
             {
                 KeyChar = Console.ReadKey();
-                ShowMenu();
+                Console.WriteLine();
                 CurrentInput = KeyChar.KeyChar - 48;
                 if (CurrentInput == 9)
                     break;
@@ -61,6 +61,8 @@ namespace Csharp_kennis
                 }
                 else if (CurrentInput == 5)
                     Mp3Spelers.Add(AddNewMp3Speler(Mp3Spelers));
+                else if (CurrentInput == 8)
+                    ShowMenu();
                 else if (CurrentInput > 0 && CurrentInput < 10)
                     Console.WriteLine("gekozen actie: " + CurrentInput);
             }
@@ -96,6 +98,7 @@ namespace Csharp_kennis
             MainMenuPages[2] = "3 mutatie voorraad";
             MainMenuPages[3] = "4 statestieken";
             MainMenuPages[4] = "5 mp3 speler toevoegen";
+            MainMenuPages[7] = "8 menu";
             MainMenuPages[8] = "9 exit";
             Console.Clear();
             for (int index = 0; index < MainMenuPages.Length; index += 1)
@@ -147,7 +150,6 @@ namespace Csharp_kennis
                     CurrentProduct.Stock = CurrentStock;
                 Mp3SpelersArray[index] = CurrentProduct;
             }
-            ShowMenu();
             ArrayList UpdatedMp3Speler = new ArrayList();
             UpdatedMp3Speler.AddRange(Mp3SpelersArray);
             return UpdatedMp3Speler;
@@ -170,10 +172,10 @@ namespace Csharp_kennis
                     PrijsPerMbNaam = X.Model;
                 }
             }
-            Statistics = "Aantal Mp3 spelers in voorraad: " + TotaleVoorraad;
-            Statistics += "Totale waarde van voorraad: " + TotaleVoorraadWaarde;
-            Statistics += "Gemiddelde prijs per mp3speler: " + TotaleVoorraadWaarde / TotaleVoorraad;
-            Statistics += "Mp3 speler met de beste prijs per mB: " + PrijsPerMbNaam;
+            Statistics = "Aantal Mp3 spelers in voorraad: " + TotaleVoorraad + "\n";
+            Statistics += "Totale waarde van voorraad: " + TotaleVoorraadWaarde + "\n";
+            Statistics += "Gemiddelde prijs per mp3speler: " + TotaleVoorraadWaarde / TotaleVoorraad + "\n";
+            Statistics += "Mp3 speler met de beste prijs per mB: " + PrijsPerMbNaam + "\n";
         }
 
         public static Product AddNewMp3Speler(ArrayList Mp3Spelers)
@@ -207,7 +209,6 @@ namespace Csharp_kennis
                 goto RetryPrice;
             }
             ReturnProduct.Stock = 0;
-            ShowMenu();
             return ReturnProduct;
         }
 
